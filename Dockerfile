@@ -11,6 +11,7 @@ RUN curl -sS https://getcomposer.org/download/2.8.1/composer.phar -o /usr/local/
 # Copy PHP app files to web root
 COPY ./ /var/www/html
 
+#You need to give write permissions to the storage and bootstrap/cache directories.
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
     && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
     
