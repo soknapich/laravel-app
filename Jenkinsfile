@@ -14,14 +14,31 @@ pipeline {
         //     }
         // }
 
-        // stage('Composer Install') {
-        //     steps {
-        //         sh '''
-        //             curl -sS https://getcomposer.org/installer | php
-        //             php composer.phar install --no-interaction --prefer-dist
-        //         '''
-        //     }
-        // }
+        stage('PHP Install') {
+            steps {
+                sh '''
+                    docker run -d \
+                    --name laravel-php \
+                    -v .:/var/www/html \
+                    php:8.2-fpm
+                '''
+            }
+        }
+
+        
+        stage('NGINX Install') {
+            steps {
+                sh '''
+                 docker run -d \
+                    --name laravel-nginx \
+                    --link laravel-php:laravel-php \
+                    -p 8083:80 \
+                    -v .:/var/www/html:ro \
+                    -v ./docker/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+                    nginx:alpine
+                '''
+            }
+        }
 
         stage('Prepare Laravel') {
             steps {
@@ -35,8 +52,8 @@ pipeline {
 
         stage('Start Docker (NGINX + PHP-FPM)') {
             steps {
-                sh 'docker-compose down || true'
-                sh 'docker-compose up -d --build'
+                sh 'docker compose down || true'
+                sh 'docker compose up -d --build'
             }
         }
     }
