@@ -35,12 +35,17 @@ pipeline {
                     --name laravel-nginx \
                     --link laravel-php:laravel-php \
                     -p 8085:80 \
-                    -v $(pwd):/var/www/html:ro \
-                    -v $(pwd)/default.conf:/etc/nginx/conf.d/default.conf:ro \
                     nginx:alpine
                 '''
             }
         }
+
+        stage('NGINX Install') {
+          steps {
+              sh ''' docker cp $(pwd) laravel-nginx:/usr/share/nginx/html '''
+          }
+        }
+
         // -v $(pwd)/nginx.conf:/etc/nginx/default.conf \
         // -v $(pwd)/docker/nginx.conf:/etc/nginx/nginx.conf:ro \
         // stage('Prepare Laravel') {
