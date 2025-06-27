@@ -33,7 +33,6 @@ pipeline {
                  
                  docker run -d \
                     --name laravel-nginx \
-                    --link laravel-php:laravel-php \
                     -p 8085:80 \
                     nginx:alpine
                 '''
