@@ -43,7 +43,7 @@ pipeline {
         stage('NGINX Copy source') {
           steps {
               sh '''
-              docker cp $(pwd) laravel-nginx:/usr/share/nginx/html 
+              docker cp $(pwd) laravel-nginx:/var/www/html/
             '''
           }
         }
