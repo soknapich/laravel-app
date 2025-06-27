@@ -48,7 +48,7 @@ pipeline {
             }
         }
 
-         stage('Install PHP') {
+        stage('Install PHP') {
             steps {
                 sh '''
                 docker exec --user root laravel-nginx apt-get install -y git unzip curl
@@ -62,7 +62,7 @@ pipeline {
         //       docker cp $(pwd) laravel-nginx:/var/
         //     '''
         //   }
-        }
+        //}
 
         // -v $(pwd)/nginx.conf:/etc/nginx/default.conf \
         // -v $(pwd)/docker/nginx.conf:/etc/nginx/nginx.conf:ro \
