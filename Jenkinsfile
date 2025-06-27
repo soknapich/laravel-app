@@ -32,7 +32,7 @@ pipeline {
                  docker run -d \
                     --name laravel-nginx \
                     --link laravel-php:laravel-php \
-                    -p 8083:80 \
+                    -p 8085:80 \
                     -v $(pwd):/var/www/html:ro \
                     -v $(pwd)/docker/nginx.conf:/etc/nginx/conf.d/laravel.conf:ro \
                     nginx:alpine
