@@ -14,7 +14,7 @@ pipeline {
             steps {
                 sh 'docker stop php-nginx-container-laravel || true'
                 sh 'docker rm php-nginx-container-laravel || true'
-                sh 'docker run -d -p 8081:80 --name php-nginx-container-laravelmy-php-nginx-laravel'
+                sh 'docker run -d -p 8081:80 --name php-nginx-container-laravel my-php-nginx-laravel'
             }
         }
     }
