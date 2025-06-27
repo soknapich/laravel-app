@@ -40,9 +40,11 @@ pipeline {
             }
         }
 
-        stage('NGINX Install') {
+        stage('NGINX Copy source') {
           steps {
-              sh ''' docker cp $(pwd) laravel-nginx:/usr/share/nginx/html '''
+              sh '''
+              docker cp $(pwd) laravel-nginx:/usr/share/nginx/html 
+            '''
           }
         }
 
