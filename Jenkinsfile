@@ -29,6 +29,7 @@ pipeline {
         stage('NGINX Install') {
             steps {
                 sh '''
+                 cat $(pwd)/nginx.conf \
                  docker run -d \
                     --name laravel-nginx \
                     --link laravel-php:laravel-php \
