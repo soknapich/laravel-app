@@ -42,7 +42,7 @@ pipeline {
         stage('Install PHP Extensions') {
             steps {
                 sh '''
-                docker exec --user root laravel-nginx apt-get update
+                    docker exec laravel-nginx apt-get update
                 '''
             }
         }
@@ -50,7 +50,7 @@ pipeline {
         stage('Install PHP') {
             steps {
                 sh '''
-                docker exec --user root laravel-nginx apt-get install -y git unzip curl
+                docker exec laravel-nginx apt-get install -y git unzip curl
                 '''
             }
         }
