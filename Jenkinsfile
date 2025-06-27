@@ -14,16 +14,16 @@ pipeline {
         //     }
         // }
 
-        stage('PHP Install') {
-            steps {
-                sh '''
-                    docker run -d \
-                    --name laravel-php \
-                    -v $(pwd):/var/www/html \
-                    php:8.2-fpm
-                '''
-            }
-        }
+        // stage('PHP Install') {
+        //     steps {
+        //         sh '''
+        //             docker run -d \
+        //             --name laravel-php \
+        //             -v $(pwd):/var/www/html \
+        //             php:8.2-fpm
+        //         '''
+        //     }
+        // }
 
         
         stage('NGINX Install') {
@@ -40,12 +40,28 @@ pipeline {
             }
         }
 
-        stage('NGINX Copy source') {
-          steps {
-              sh '''
-              docker cp $(pwd) laravel-nginx:/var/
-            '''
-          }
+        stage('Install PHP Extensions') {
+            steps {
+                sh '''
+                docker exec --user root laravel-nginx apt-get update
+                '''
+            }
+        }
+
+         stage('Install PHP') {
+            steps {
+                sh '''
+                docker exec --user root laravel-nginx apt-get install -y git unzip curl
+                '''
+            }
+        }
+
+        // stage('NGINX Copy source') {
+        //   steps {
+        //       sh '''
+        //       docker cp $(pwd) laravel-nginx:/var/
+        //     '''
+        //   }
         }
 
         // -v $(pwd)/nginx.conf:/etc/nginx/default.conf \
