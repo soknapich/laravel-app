@@ -28,7 +28,7 @@ pipeline {
         
         stage('NGINX Install') {
             steps {
-                sh '''cat $(pwd)/nginx.conf '''
+                sh '''cat $(pwd)/default.conf '''
                 sh '''
                  
                  docker run -d \
@@ -36,11 +36,12 @@ pipeline {
                     --link laravel-php:laravel-php \
                     -p 8085:80 \
                     -v $(pwd):/var/www/html:ro \
+                    -v $(pwd)/nginx.conf:/etc/nginx/default.conf \
                     nginx:alpine
                 '''
             }
         }
-        // -v $(pwd)/nginx.conf:/etc/nginx/nginx.conf \
+        // -v $(pwd)/nginx.conf:/etc/nginx/default.conf \
         // -v $(pwd)/docker/nginx.conf:/etc/nginx/nginx.conf:ro \
         // stage('Prepare Laravel') {
         
