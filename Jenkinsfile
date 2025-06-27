@@ -19,7 +19,7 @@ pipeline {
                 sh '''
                     docker run -d \
                     --name laravel-php \
-                    -v .:/var/www/html \
+                    -v $(pwd):/var/www/html \
                     php:8.2-fpm
                 '''
             }
@@ -33,29 +33,29 @@ pipeline {
                     --name laravel-nginx \
                     --link laravel-php:laravel-php \
                     -p 8083:80 \
-                    -v .:/var/www/html:ro \
+                    -v $(pwd):/var/www/html:ro \
                     -v ./docker/nginx.conf:/etc/nginx/conf.d/default.conf:ro
                     nginx:alpine
                 '''
             }
         }
 
-        stage('Prepare Laravel') {
-            steps {
-                sh '''
-                    cp .env.example .env || true
-                    php artisan key:generate || true
-                    chmod -R 775 storage bootstrap/cache || true
-                '''
-            }
-        }
+        // stage('Prepare Laravel') {
+        //     steps {
+        //         sh '''
+        //             cp .env.example .env || true
+        //             php artisan key:generate || true
+        //             chmod -R 775 storage bootstrap/cache || true
+        //         '''
+        //     }
+        // }
 
-        stage('Start Docker (NGINX + PHP-FPM)') {
-            steps {
-                sh 'docker compose down || true'
-                sh 'docker compose up -d --build'
-            }
-        }
+        // stage('Start Docker (NGINX + PHP-FPM)') {
+        //     steps {
+        //         sh 'docker compose down || true'
+        //         sh 'docker compose up -d --build'
+        //     }
+        // }
     }
 
     post {
