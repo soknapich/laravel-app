@@ -34,6 +34,7 @@ pipeline {
                     --link laravel-php:laravel-php \
                     -p 8085:80 \
                     -v $(pwd):/var/www/html:ro \
+                    -v /docker/nginx.conf:/etc/nginx/nginx.conf:ro
                     nginx:alpine
                 '''
             }
