@@ -1,92 +1,21 @@
 pipeline {
     agent any
 
-    environment {
-        COMPOSER_HOME = "${WORKSPACE}/.composer"
-    }
-
     stages {
-        // stage('Clone Laravel Repo') {
-        //     steps {
-        //         git credentialsId: 'your-credentials-id',
-        //             url: 'https://bitbucket.org/your-username/your-laravel-repo.git',
-        //             branch: 'main'
-        //     }
-        // }
-
-        // stage('PHP Install') {
-        //     steps {
-        //         sh '''
-        //             docker run -d \
-        //             --name laravel-php \
-        //             -v $(pwd):/var/www/html \
-        //             php:8.2-fpm
-        //         '''
-        //     }
-        // }
-
-        
-        stage('NGINX Install') {
+        stage('Build Docker Image') {
             steps {
-                sh '''cat $(pwd)/default.conf '''
-                sh '''
-                 
-                 docker run -d \
-                    --name laravel-nginx \
-                    -p 8085:80 \
-                    nginx:alpine
-                '''
+                script {
+                    dockerImage = docker.build("my-php-nginx-app")
+                }
             }
         }
 
-        stage('Install PHP Extensions') {
+        stage('Run Container') {
             steps {
-                sh '''
-                    docker exec laravel-nginx apt-get update
-                '''
+                sh 'docker stop php-nginx-container || true'
+                sh 'docker rm php-nginx-container || true'
+                sh 'docker run -d -p 8081:80 --name php-nginx-container my-php-nginx-app'
             }
-        }
-
-        stage('Install PHP') {
-            steps {
-                sh '''
-                docker exec laravel-nginx apt-get install -y git unzip curl
-                '''
-            }
-        }
-
-        // stage('NGINX Copy source') {
-        //   steps {
-        //       sh '''
-        //       docker cp $(pwd) laravel-nginx:/var/
-        //     '''
-        //   }
-        //}
-
-        // -v $(pwd)/nginx.conf:/etc/nginx/default.conf \
-        // -v $(pwd)/docker/nginx.conf:/etc/nginx/nginx.conf:ro \
-        // stage('Prepare Laravel') {
-        
-        //     steps {
-        //         sh '''
-        //             cp .env.example .env || true
-        //             php artisan key:generate || true
-        //             chmod -R 775 storage bootstrap/cache || true
-        //         '''
-        //     }
-        // }
-
-        // stage('Start Docker (NGINX + PHP-FPM)') {
-        //     steps {
-        //         sh 'docker compose down || true'
-        //         sh 'docker compose up -d --build'
-        //     }
-        // }
-    }
-
-    post {
-        always {
-            echo 'Laravel deployed using Docker.'
         }
     }
 }
