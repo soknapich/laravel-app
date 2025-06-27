@@ -34,13 +34,14 @@ pipeline {
                     --link laravel-php:laravel-php \
                     -p 8085:80 \
                     -v $(pwd):/var/www/html:ro \
-                    -v $(pwd)/docker/nginx.conf:/etc/nginx/nginx.conf:ro \
                     nginx:alpine
                 '''
             }
         }
-
+        
+        // -v $(pwd)/docker/nginx.conf:/etc/nginx/nginx.conf:ro \
         // stage('Prepare Laravel') {
+        
         //     steps {
         //         sh '''
         //             cp .env.example .env || true
